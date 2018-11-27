@@ -7,4 +7,4 @@ let rec boundingBox (fig:figure) : point*point =
   | Rectangle ((x0,y0), (x1,y1), col) ->
       ((x0,y0), (x1,y1))
   | Mix (f1,f2) ->
-      (boundingBox(f1),boundingBox(f2))
+      (boundingBox(f1), boundingBox(f2))
