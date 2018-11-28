@@ -8,22 +8,22 @@ let square = Rectangle((90,110), (40,40), (255,0,0))
 
 let round bmp fig =
   for x = 0 to 140 do /// Does a for-loop through the BitMap x-cordinates
-    for y = 0 to 140 do // Does a for-loop through the BitMap y-cordinates 
-      match (colourAt (x,y) fig) with /// Checks to see if the figure is inside the cordinates, and prints a colour if that is the case 
+    for y = 0 to 140 do // Does a for-loop through the BitMap y-cordinates
+      match (colourAt (x,y) fig) with /// Checks to see if the figure is inside the cordinates, and prints a colour if that is the case
       | Some col -> ImgUtil.setPixel(ImgUtil.fromRgb ((colourAt (x,y) fig).Value)) (x,y) pic // prints a colour
-      | None  -> ImgUtil.setPixel(ImgUtil.fromRgb (100,200,150)) (x,y) pic /// Prints a different colour for the 
+      | None  -> ImgUtil.setPixel(ImgUtil.fromRgb (100,200,150)) (x,y) pic /// Prints a different colour for the
   do ImgUtil.toPngFile "figTest" pic
 
-round pic mix 
+round pic mix
 
 /// Opgave 8i1
 
 //let circle = Circle((125,125), (125), (0,0,255))
 /// <param name "filnavn" "figur" "b" and "h">
-/// filnavn: string in form of the name of the given file you want to produce 
+/// filnavn: string in form of the name of the given file you want to produce
 /// figur: Figure
-/// b: integer in form of width  
-/// h: integer in form of height 
+/// b: integer in form of width
+/// h: integer in form of height
 /// </param name>
 /// <summary>
 /// the functions makes a BitMap (bmp) that takes the form of (b x h), afterwards, by 2 for-loops, it runs through the whole BitMap and checks "colourAt" if one of the given figures is presented, and if this is true, it "prints" a colour onto the BitMap
@@ -43,8 +43,8 @@ let MakePicture (filnavn:string) (figur:figure) (b:int) (h:int) =
 MakePicture "8i1 billede.png" circle 250 250
 
 // Opgave 8i2
-/// Here the function MakePicture gets used to make a picture, using the figure made earlier "mix" that combines the 
-/// the circle and rectangle in one figure. 
+/// Here the function MakePicture gets used to make a picture, using the figure made earlier "mix" that combines the
+/// the circle and rectangle in one figure.
 /// After this it gets given the size of the bitmap 100x150, and makes the file called figTest.png
 MakePicture "figTest.png" mix 100 150
 
@@ -91,15 +91,15 @@ printfn "Mix between two rectangles: %b\n" (CheckFigure (mixrr))
 
 // 8i4
 
-/// <param name "fig" "(z,c)"> 
+/// <param name "fig" "(z,c)">
 /// "fig" takes form of the type Figure
-/// (z, c) is a tupple, of which you want to move the figure (fig) 
+/// (z, c) is a tupple, of which you want to move the figure (fig)
 /// </param name>
 /// <summary>
 /// The function takes a figure, of any of the 3 sorts that have been given, an is able to move the figure around, compared to where it originally would have been
 /// </summary>
 /// <returns>
-/// The function returns another figure 
+/// The function returns another figure
 /// </returns>
 let rec move (fig:figure) (z, c) : figure =
   match fig with
@@ -110,5 +110,37 @@ let rec move (fig:figure) (z, c) : figure =
   | Mix (f1,f2) ->
       Mix(move (f1) (z,c),move(f2) (z,c))
 
-let figTest = Mix (circle, square) 
+let figTest = Mix (circle, square)
 MakePicture "moveTest.png" (move figTest (-20,20)) 100 150
+
+
+// 8i5
+/// <param name "fig">
+/// Fig takes the form of figure
+/// </param name>
+/// <summary>
+/// the function matches fig with one of the three figures, and corrosponds to that
+/// by doing one of three things, and thereby checking for the smallest box, that covers the figure
+/// </summary>
+/// <returns>
+/// A tupple of Points
+/// </returns>
+let rec boundingBox (fig:figure) : point*point =
+  match fig with
+  | Circle ((cx,cy), r, col) ->
+      ((cx-r,cy-r),(cx+r,cy+r))
+  | Rectangle ((x0,y0), (x1,y1), col) ->
+      ((x0,y0), (x1,y1))
+  | Mix (f1,f2) ->
+     ((fst(boundingBox(f1)),(snd(boundingBox(f2)))))
+
+let square5 = Rectangle((40,40), (90,110), (255,0,0))
+
+let circle5 = Circle((50,50), (45), (0,0,255))
+let mix5 = Mix ((circle,square))
+/// Jeg har en god ide om at det første par i tupplen skal være så lille som mulig og det andet par skal være så stort som muligt. Men jeg har svært ved at finde en "nem" måde at gøre det på, hvor man ikke nødvendigvis skal ud i flere linjer lang "If, Then, Else" kommandoer. jeg kan ikke lige lurer hvordan jeg skal implementere det.
+
+printfn "8i5\n"
+printfn "Square:%A" (boundingBox square5)
+printfn "Circle:%A" (boundingBox circle5)
+printfn "Mix:%A" (boundingBox mix5)

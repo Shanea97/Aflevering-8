@@ -23,7 +23,8 @@ let square = Rectangle((40,40), (90,110), (255,0,0))
 let circle = Circle((50,50), (45), (0,0,255))
 let mix = Mix ((circle,square))
 
-printfn "Mix:%A" (boundingBox mix)
+
 printfn "Square:%A" (boundingBox square)
 printfn "Circle:%A" (boundingBox circle)
-/// Jeg har en god ide om at det første par i tupplen skal være så lille som mulig og det andet par skal være så stort som muligt. Men jeg har svært ved at finde en "nem" måde at gøre det på, hvor man ikke nødvendigvis skal ud i flere linjer lang "If, Then, Else" kommandoer. 
+printfn "Mix:%A" (boundingBox mix)
+/// Jeg har en god ide om at det første par i tupplen skal være så lille som mulig og det andet par skal være så stort som muligt. Men jeg har svært ved at finde en "nem" måde at gøre det på, hvor man ikke nødvendigvis skal ud i flere linjer lang "If, Then, Else" kommandoer. jeg kan ikke lige lurer hvordan jeg skal implementere det.
