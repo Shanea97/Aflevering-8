@@ -16,7 +16,13 @@ let rec boundingBox (fig:figure) : point*point =
   | Rectangle ((x0,y0), (x1,y1), col) ->
       ((x0,y0), (x1,y1))
   | Mix (f1,f2) ->
-     ((fst(boundingBox(f1)),(snd(boundingBox(f2)))))
+      let ((x1,y1),(x2,y2)) = boundingBox f1
+      let ((z1,c1),(z2,c2)) = boundingBox f2 
+      let fstMin = min x1 z1
+      let sndMin = min y1 c1 
+      let fstMax = max x2 z2
+      let sndMax = max y2 c2
+      ((fstMin,sndMin),(fstMax,sndMax))
 
 let square = Rectangle((40,40), (90,110), (255,0,0))
 
@@ -26,5 +32,5 @@ let mix = Mix ((circle,square))
 
 printfn "Square:%A" (boundingBox square)
 printfn "Circle:%A" (boundingBox circle)
-printfn "Mix:%A" (boundingBox mix)
+printfn "Mix:%A" (boundingBox mix) 
 /// Jeg har en god ide om at det første par i tupplen skal være så lille som mulig og det andet par skal være så stort som muligt. Men jeg har svært ved at finde en "nem" måde at gøre det på, hvor man ikke nødvendigvis skal ud i flere linjer lang "If, Then, Else" kommandoer. jeg kan ikke lige lurer hvordan jeg skal implementere det.
